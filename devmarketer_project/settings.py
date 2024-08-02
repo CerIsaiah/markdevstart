@@ -22,9 +22,13 @@ PORT = int(os.environ.get('PORT', 8000))
 SECRET_KEY = "46cfe521525b948ba0724839cbd46b9c"
 #"django-insecure-^#p144u_(ev)@1ni!@#g(f_gaet@vh%fq^wc3h@+@(lq#tzma9"
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
+#if you are running locally
 TESTING = False
+
+#if you want to use static (Keep false for production)
+NO_STATIC = False
 
 if TESTING:
     ALLOWED_HOSTS = ['*']    
@@ -35,16 +39,30 @@ else:
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
         },
     },
-    'root': {
-        'handlers': ['console'],
-        'level': 'DEBUG',
+    'handlers': {
+        'static_file_errors': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'static_file_errors.log'),
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['static_file_errors'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
     },
 }
+
+
 
 #USED FOR TOKENS AND AUTH
 AUTH_USER_MODEL = 'api.User'
@@ -86,7 +104,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'APP_DIRS': True,
-        'DIRS': [os.path.join(BASE_DIR, 'react_build')] if not TESTING else [],
+        'DIRS': [os.path.join(BASE_DIR, 'react_build')],
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -97,6 +115,8 @@ TEMPLATES = [
         },
     },
 ]
+
+
 
 #NAME OF THE APP
 WSGI_APPLICATION = "devmarketer_project.wsgi.application"
@@ -154,11 +174,30 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-if not TESTING:
-    STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'react_build'),
-    ]
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+if TESTING:
+    if not NO_STATIC:
+        print("USING REACT BUILD STATIC FILES")
+        
+        REACT_BUILD_DIR = os.path.join(BASE_DIR, 'react_build')
+
+        # Direct Django to look in the React build's static directory
+        STATICFILES_DIRS = [
+            os.path.join(REACT_BUILD_DIR, 'static'),  # React's static files
+        ]
+
+        # If using WhiteNoise for testing, ensure these settings are correct
+        STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+        MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
+
+        WHITENOISE_USE_FINDERS = True
+        WHITENOISE_MANIFEST_STRICT = False
+        WHITENOISE_COMPRESS = True
+        WHITENOISE_AUTOREFRESH = True
+
+        # Point Django templates to React build output for the entry point
+        TEMPLATES[0]['DIRS'] = [os.path.join(REACT_BUILD_DIR)]
+
+    
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -182,9 +221,3 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,
 }
 
-# I THINK THIS IS WHAT FIXED THE 500 ERROR
-if not TESTING:
-    WHITENOISE_USE_FINDERS = True
-    WHITENOISE_MANIFEST_STRICT = False
-    WHITENOISE_COMPRESS = True
-    WHITENOISE_AUTOREFRESH = True
