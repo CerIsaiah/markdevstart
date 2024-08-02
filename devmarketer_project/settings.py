@@ -29,12 +29,12 @@ SECRET_KEY = "46cfe521525b948ba0724839cbd46b9c"
 #DEBUG = os.environ.get("DEBUG", "true").lower() == "true"
 DEBUG = True
 
-Testing = True
+Testing = False
 
 if Testing:
     ALLOWED_HOSTS = ['*']    
 else:
-   ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ") 
+    ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ") 
 
 LOGGING = {
     'version': 1,
