@@ -34,6 +34,21 @@ if Testing:
 else:
    ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ") 
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
+    },
+}
+
+
 AUTH_USER_MODEL = 'api.User'
 
 # Application definition
@@ -67,15 +82,18 @@ ROOT_URLCONF = "devmarketer_project.urls"
 
 TEMPLATES = [
        {
-           "BACKEND": "django.template.backends.django.DjangoTemplates",
-           "DIRS": [os.path.join(BASE_DIR, 'react_build')],
-           "APP_DIRS": True,
-           "OPTIONS": {
-               "context_processors": [
-                   "django.template.context_processors.debug",
-                   "django.template.context_processors.request",
-                   "django.contrib.auth.context_processors.auth",
-                   "django.contrib.messages.context_processors.messages",
+           'BACKEND': 'django.template.backends.django.DjangoTemplates',
+           'DIRS': [
+               os.path.join(BASE_DIR, 'react_build'),
+               os.path.join(BASE_DIR, 'templates'),
+           ],
+           'APP_DIRS': True,
+           'OPTIONS': {
+               'context_processors': [
+                   'django.template.context_processors.debug',
+                   'django.template.context_processors.request',
+                   'django.contrib.auth.context_processors.auth',
+                   'django.contrib.messages.context_processors.messages',
                ],
            },
        },
