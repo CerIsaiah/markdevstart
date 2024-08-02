@@ -16,12 +16,8 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+#ALSO SPECIFYED PORT. MIGHT BE A 500 ERROR FIX AS WELL
 PORT = int(os.environ.get('PORT', 8000))
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 
 SECRET_KEY = "46cfe521525b948ba0724839cbd46b9c"
 #"django-insecure-^#p144u_(ev)@1ni!@#g(f_gaet@vh%fq^wc3h@+@(lq#tzma9"
@@ -50,10 +46,9 @@ LOGGING = {
     },
 }
 
-
+#USED FOR TOKENS AND AUTH
 AUTH_USER_MODEL = 'api.User'
 
-# Application definition
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -71,7 +66,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # This should be second
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # ADDED FROM RENDER
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',  
     'django.middleware.common.CommonMiddleware',
@@ -82,6 +77,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "devmarketer_project.urls"
 
+#Make sure to sure the react index.html template here. Edit the template to support static files
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -98,6 +94,7 @@ TEMPLATES = [
     },
 ]
 
+#NAME OF THE APP
 WSGI_APPLICATION = "devmarketer_project.wsgi.application"
 
 
@@ -110,14 +107,14 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
+#Testing is only after ive started using things on render
 if Testing:
     DATABASES['default'] = dj_database_url.parse("postgresql://database_1o26_user:C6Cu4rhHBqxlGQFRFxRCaz8hlPOVQaxI@dpg-cqlvfu52ng1s73e07dm0-a.oregon-postgres.render.com/database_1o26")
 else:
     database_url = os.environ.get("DATABASE_URL")
     DATABASES['default'] = dj_database_url.parse(database_url)
 
-# Password validation
-# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -157,15 +154,7 @@ STATICFILES_DIRS = [
 ]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-'''
-else:
-   STATIC_URL = '/static/'
-   STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-   STATICFILES_DIRS = [
-       os.path.join(BASE_DIR, react_build'),
-   ]
-   STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-'''
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
@@ -188,7 +177,7 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,
 }
 
-# Optional: Add these settings for better performance
+# I THINK THIS IS WHAT FIXED THE 500 ERROR
 WHITENOISE_USE_FINDERS = True
 WHITENOISE_MANIFEST_STRICT = False
 WHITENOISE_COMPRESS = True
