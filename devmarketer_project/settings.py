@@ -25,9 +25,9 @@ SECRET_KEY = "46cfe521525b948ba0724839cbd46b9c"
 DEBUG = False
 
 #if you are running locally
-TESTING = False
+TESTING = True
 
-#if you want to use static (Keep false for production)
+#if you want to use static (Keep false for)
 NO_STATIC = False
 
 if TESTING:
