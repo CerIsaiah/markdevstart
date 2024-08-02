@@ -30,6 +30,8 @@ TESTING = True
 #if you want to use static (Keep false for)
 NO_STATIC = False
 
+#Deployed for switching the database things:
+DEPLOYED = True
 if TESTING:
     ALLOWED_HOSTS = ['*']    
 else:
@@ -133,11 +135,12 @@ DATABASES = {
 }
 
 #Testing is only after ive started using things on render
-if TESTING:
-    DATABASES['default'] = dj_database_url.parse("postgresql://database_1o26_user:C6Cu4rhHBqxlGQFRFxRCaz8hlPOVQaxI@dpg-cqlvfu52ng1s73e07dm0-a.oregon-postgres.render.com/database_1o26")
-else:
+if DEPLOYED:
     database_url = os.environ.get("DATABASE_URL")
-    DATABASES['default'] = dj_database_url.parse(database_url)
+    DATABASES['default'] = dj_database_url.parse(database_url)   
+else:
+    DATABASES['default'] = dj_database_url.parse("postgresql://database_1o26_user:C6Cu4rhHBqxlGQFRFxRCaz8hlPOVQaxI@dpg-cqlvfu52ng1s73e07dm0-a.oregon-postgres.render.com/database_1o26")
+    
 
 
 AUTH_PASSWORD_VALIDATORS = [
