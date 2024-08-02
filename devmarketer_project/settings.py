@@ -26,9 +26,11 @@ PORT = int(os.environ.get('PORT', 8000))
 SECRET_KEY = "46cfe521525b948ba0724839cbd46b9c"
 #"django-insecure-^#p144u_(ev)@1ni!@#g(f_gaet@vh%fq^wc3h@+@(lq#tzma9"
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", "true").lower() == "true"
+#DEBUG = os.environ.get("DEBUG", "true").lower() == "true"
+DEBUG = True
 
-Testing = False
+Testing = True
+
 if Testing:
     ALLOWED_HOSTS = ['*']    
 else:
@@ -81,23 +83,20 @@ MIDDLEWARE = [
 ROOT_URLCONF = "devmarketer_project.urls"
 
 TEMPLATES = [
-       {
-           'BACKEND': 'django.template.backends.django.DjangoTemplates',
-           'DIRS': [
-               os.path.join(BASE_DIR, 'react_build'),
-               os.path.join(BASE_DIR, 'templates'),
-           ],
-           'APP_DIRS': True,
-           'OPTIONS': {
-               'context_processors': [
-                   'django.template.context_processors.debug',
-                   'django.template.context_processors.request',
-                   'django.contrib.auth.context_processors.auth',
-                   'django.contrib.messages.context_processors.messages',
-               ],
-           },
-       },
-   ]
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'APP_DIRS': True,
+        'DIRS': [os.path.join(BASE_DIR, 'react_build')],
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
 
 WSGI_APPLICATION = "devmarketer_project.wsgi.application"
 
@@ -151,18 +150,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = "/static/"
-
-
-# Tell Django to copy static assets into a path called `staticfiles` (this is specific to Render)
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-# Enable the WhiteNoise storage backend, which compresses static files to reduce disk use
-# and renames the files with unique names for each version to support long-term caching
 STATICFILES_DIRS = [
-       os.path.join(BASE_DIR, 'react_build'),
-   ]
+    os.path.join(BASE_DIR, 'react_build'),
+]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
 
 '''
 else:
@@ -194,9 +187,6 @@ SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
 }
-
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Optional: Add these settings for better performance
 WHITENOISE_USE_FINDERS = True

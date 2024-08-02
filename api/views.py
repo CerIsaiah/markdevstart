@@ -21,6 +21,10 @@ logger = logging.getLogger(__name__)
 # Serve React App
 index = never_cache(TemplateView.as_view(template_name='index.html'))
 
+class ReactAppView(TemplateView):
+    template_name = 'index.html'
+
+
 User = get_user_model()
 
 @api_view(['POST'])
