@@ -140,17 +140,18 @@ STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Enable the WhiteNoise storage backend, which compresses static files to reduce disk use
 # and renames the files with unique names for each version to support long-term caching
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATICFILES_DIRS = [
-       os.path.join(BASE_DIR, 'react_build', 'static'),
+       os.path.join(BASE_DIR, 'react_build'),
    ]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 '''
 else:
    STATIC_URL = '/static/'
    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
    STATICFILES_DIRS = [
-       os.path.join(BASE_DIR, 'react_build', 'static'),
+       os.path.join(BASE_DIR, react_build'),
    ]
    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 '''
