@@ -12,9 +12,17 @@ class User(AbstractUser):
     profile_views = models.IntegerField(default=0)
     subscription_status = models.CharField(max_length=50, default='Free')
     bookmarked_users = models.ManyToManyField('self', symmetrical=False, related_name='bookmarked_by')
-
+    looking_for = models.TextField(blank=True)
+    github = models.URLField(blank=True)
+    linkedin = models.URLField(blank=True)
+    website = models.URLField(blank=True)
+    
     def __str__(self):
         return self.username
+    
+    @property
+    def is_profile_complete(self):
+        return bool(self.name and self.looking_for and self.bio)
 
 class Connection(models.Model):
     user = models.ForeignKey(User, related_name='connections', on_delete=models.CASCADE)

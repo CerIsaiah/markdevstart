@@ -22,7 +22,6 @@ PORT = int(os.environ.get('PORT', 8000))
 SECRET_KEY = "46cfe521525b948ba0724839cbd46b9c"
 #"django-insecure-^#p144u_(ev)@1ni!@#g(f_gaet@vh%fq^wc3h@+@(lq#tzma9"
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = os.environ.get("DEBUG", "true").lower() == "true"
 DEBUG = True
 
 TESTING = False

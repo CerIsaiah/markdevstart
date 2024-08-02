@@ -12,10 +12,13 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         return user
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    is_profile_complete = serializers.BooleanField(read_only=True)
+
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'name', 'is_developer', 'is_marketer', 'skills', 'bio', 
-                  'featured', 'profile_views', 'subscription_status', 'date_joined']
+                  'looking_for', 'featured', 'profile_views', 'subscription_status', 'date_joined', 
+                  'is_profile_complete']
         read_only_fields = ['id', 'username', 'email', 'profile_views', 'subscription_status', 'date_joined']
 
 class UserDashboardSerializer(serializers.ModelSerializer):
@@ -25,7 +28,8 @@ class UserDashboardSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'name', 'is_developer', 'is_marketer', 'skills', 'bio', 
-                  'featured', 'profile_views', 'subscription_status', 'date_joined', 'connections', 'active_projects']
+                  'featured', 'profile_views', 'subscription_status', 'date_joined', 'connections', 'active_projects',
+                  'looking_for', 'github', 'linkedin', 'website']
 
     def get_connections(self, obj):
         return obj.bookmarked_users.count()

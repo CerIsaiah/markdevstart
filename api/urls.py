@@ -15,4 +15,5 @@ urlpatterns = [
     path('messages/', views.MessageListCreate.as_view(), name='message-list-create'),
     path('conversations/', views.get_conversation_list, name='conversation-list'),
     path('conversation-partners/', views.get_conversation_partners, name='conversation-partners'),
+    
 ]

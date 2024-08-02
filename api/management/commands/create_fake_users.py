@@ -32,14 +32,18 @@ class Command(BaseCommand):
             while User.objects.filter(username=username).exists():
                 username = faker.user_name()
             
+            is_developer = random.choice([True, False])
+            is_marketer = not is_developer  # Ensure user is either a developer or marketer
+
             user = User.objects.create(
                 username=username,
                 email=faker.email(),
                 name=faker.name(),
-                is_developer=random.choice([True, False, None]),
-                is_marketer=random.choice([True, False]),
+                is_developer=is_developer,
+                is_marketer=is_marketer,
                 skills=random.sample(all_skills, random.randint(2, 5)),
                 bio=faker.text(max_nb_chars=200),
+                looking_for=faker.sentence(),
                 featured=random.choice([True, False]),
                 profile_views=random.randint(0, 1000),
                 subscription_status=random.choice(subscription_statuses)
