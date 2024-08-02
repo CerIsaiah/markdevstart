@@ -2,12 +2,11 @@
 
 from django.contrib import admin
 from django.urls import path, include, re_path
-from api.views import index  # Import the index view
-
+from django.views.generic import TemplateView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),  # Your API urls
-    re_path(r'^.*', index, name='index'),  # This should be the last pattern
+    re_path(r'^.*', TemplateView.as_view(template_name='index.html')),
 ]
 
 

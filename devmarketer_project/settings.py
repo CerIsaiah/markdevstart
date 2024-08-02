@@ -60,20 +60,20 @@ MIDDLEWARE = [
 ROOT_URLCONF = "devmarketer_project.urls"
 
 TEMPLATES = [
-    {
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, 'react_build')],  # Add this line
-        "APP_DIRS": True,
-        "OPTIONS": {
-            "context_processors": [
-                "django.template.context_processors.debug",
-                "django.template.context_processors.request",
-                "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
-            ],
-        },
-    },
-]
+       {
+           "BACKEND": "django.template.backends.django.DjangoTemplates",
+           "DIRS": [os.path.join(BASE_DIR, 'react_build')],
+           "APP_DIRS": True,
+           "OPTIONS": {
+               "context_processors": [
+                   "django.template.context_processors.debug",
+                   "django.template.context_processors.request",
+                   "django.contrib.auth.context_processors.auth",
+                   "django.contrib.messages.context_processors.messages",
+               ],
+           },
+       },
+   ]
 
 WSGI_APPLICATION = "devmarketer_project.wsgi.application"
 
@@ -139,11 +139,12 @@ if not DEBUG:
     # and renames the files with unique names for each version to support long-term caching
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 else:
-    STATIC_URL = "/static/"
-    STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'react_build/static'),
-    ]
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+   STATIC_URL = '/static/'
+   STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+   STATICFILES_DIRS = [
+       os.path.join(BASE_DIR, 'react_build', 'static'),
+   ]
+   STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
