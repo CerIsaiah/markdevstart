@@ -30,9 +30,9 @@ DEBUG = os.environ.get("DEBUG", "true").lower() == "true"
 
 Testing = False
 if Testing:
-    ALLOWED_HOSTS = []    
+    ALLOWED_HOSTS = ['*']    
 else:
-   ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ") 
+    ALLOWED_HOSTS = ['*']    
 
 LOGGING = {
     'version': 1,
@@ -195,10 +195,10 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,
 }
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-STATICFILES_FINDERS = [
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Optional: Add these settings for better performance
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_MANIFEST_STRICT = False
+WHITENOISE_COMPRESS = True
