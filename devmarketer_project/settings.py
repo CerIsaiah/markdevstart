@@ -32,7 +32,7 @@ Testing = False
 if Testing:
     ALLOWED_HOSTS = ['*']    
 else:
-    ALLOWED_HOSTS = ['*']    
+   ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ") 
 
 LOGGING = {
     'version': 1,
