@@ -16,7 +16,7 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-#ALSO SPECIFYED PORT. MIGHT BE A 500 ERROR FIX AS WELL
+#ALSO SPECIFYED PORT. MIGHT BE A 500 ERROR FIX AS WELL. dont think so
 PORT = int(os.environ.get('PORT', 8000))
 
 SECRET_KEY = "46cfe521525b948ba0724839cbd46b9c"
@@ -25,12 +25,13 @@ SECRET_KEY = "46cfe521525b948ba0724839cbd46b9c"
 #DEBUG = os.environ.get("DEBUG", "true").lower() == "true"
 DEBUG = True
 
-Testing = False
+TESTING = False
 
-if Testing:
+if TESTING:
     ALLOWED_HOSTS = ['*']    
 else:
-    ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ") 
+    ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(" ")
+
 
 LOGGING = {
     'version': 1,
@@ -66,7 +67,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # ADDED FROM RENDER
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',  
     'django.middleware.common.CommonMiddleware',
@@ -75,14 +75,19 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+if not TESTING:
+    MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
+    
 ROOT_URLCONF = "devmarketer_project.urls"
 
-#Make sure to sure the react index.html template here. Edit the template to support static files
+#Make sure to use the react index.html template here. Edit the template to support static files. 500 fix
+
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'APP_DIRS': True,
-        'DIRS': [os.path.join(BASE_DIR, 'react_build')],
+        'DIRS': [os.path.join(BASE_DIR, 'react_build')] if not TESTING else [],
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -109,7 +114,7 @@ DATABASES = {
 }
 
 #Testing is only after ive started using things on render
-if Testing:
+if TESTING:
     DATABASES['default'] = dj_database_url.parse("postgresql://database_1o26_user:C6Cu4rhHBqxlGQFRFxRCaz8hlPOVQaxI@dpg-cqlvfu52ng1s73e07dm0-a.oregon-postgres.render.com/database_1o26")
 else:
     database_url = os.environ.get("DATABASE_URL")
@@ -149,11 +154,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'react_build'),
-]
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+if not TESTING:
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'react_build'),
+    ]
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -178,8 +184,8 @@ SIMPLE_JWT = {
 }
 
 # I THINK THIS IS WHAT FIXED THE 500 ERROR
-WHITENOISE_USE_FINDERS = True
-WHITENOISE_MANIFEST_STRICT = False
-WHITENOISE_COMPRESS = True
-
-WHITENOISE_AUTOREFRESH = True
+if not TESTING:
+    WHITENOISE_USE_FINDERS = True
+    WHITENOISE_MANIFEST_STRICT = False
+    WHITENOISE_COMPRESS = True
+    WHITENOISE_AUTOREFRESH = True
